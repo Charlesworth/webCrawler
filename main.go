@@ -1,9 +1,18 @@
 package main
 
-import "fmt"
+import "log"
 
 func main() {
-	page := getStartingPage()
+	inputString, err := getInputArguement()
+	if err != nil {
+		log.Fatalln("input argument error:", err)
+	}
 
-	fmt.Println(page)
+	url, err := stringToValidURL(inputString)
+	if err != nil {
+		log.Fatalln("url parsing error:", err)
+	}
+
+	log.Println(url)
+	// fmt.Println(page)
 }
