@@ -5,29 +5,29 @@ import (
 	"testing"
 )
 
-func TestStringToValidURL(t *testing.T) {
+func TestStringIsValidURL(t *testing.T) {
 	HTTPURLString := "http://google.com"
-	err := stringToValidURL(HTTPURLString)
+	err := stringIsValidURL(HTTPURLString)
 	if err != nil {
-		t.Error("stringToValidURL returned an error on a valid HTTP string:", err)
+		t.Error("stringIsValidURL returned an error on a valid HTTP string:", err)
 	}
 
 	HTTPSURLString := "https://google.com"
-	err = stringToValidURL(HTTPSURLString)
+	err = stringIsValidURL(HTTPSURLString)
 	if err != nil {
-		t.Error("stringToValidURL returned an error on a valid HTTPS string:", err)
+		t.Error("stringIsValidURL returned an error on a valid HTTPS string:", err)
 	}
 
 	noSchemeURLString := "google.com"
-	err = stringToValidURL(noSchemeURLString)
+	err = stringIsValidURL(noSchemeURLString)
 	if err == nil {
-		t.Error("stringToValidURL returned no error on a string with no scheme")
+		t.Error("stringIsValidURL returned no error on a string with no scheme")
 	}
 
 	incorrectSchemeURLString := "postgres://google.com"
-	err = stringToValidURL(incorrectSchemeURLString)
+	err = stringIsValidURL(incorrectSchemeURLString)
 	if err == nil {
-		t.Error("stringToValidURL returned no error on a string with a non HTTP/HTTPS scheme")
+		t.Error("stringIsValidURL returned no error on a string with a non HTTP/HTTPS scheme")
 	}
 }
 

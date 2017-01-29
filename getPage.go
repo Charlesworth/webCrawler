@@ -3,21 +3,26 @@ package main
 import (
 	"io/ioutil"
 	"net/http"
-	"net/url"
 )
 
-func getPageBytes(u *url.URL) ([]byte, error) {
+var httpClient client
 
-	resp, err := http.Get(u.String())
+type client interface {
+	Get(string) (*http.Response, error)
+}
+
+func init() {
+	httpClient = &http.Client{}
+}
+
+func getPageBytes(url string) ([]byte, error) {
+
+	resp, err := httpClient.Get(url)
 	if err != nil {
 		return nil, err
 	}
 
 	bytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
 	resp.Body.Close()
-	return bytes, nil
+	return bytes, err
 }

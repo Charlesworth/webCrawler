@@ -5,7 +5,7 @@ import (
 	"net/url"
 )
 
-func stringToValidURL(urlString string) error {
+func stringIsValidURL(urlString string) error {
 	url, err := url.Parse(urlString)
 	if err != nil {
 		return err

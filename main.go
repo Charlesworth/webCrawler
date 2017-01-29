@@ -5,7 +5,6 @@ import "log"
 func main() {
 	url := getInputURL()
 	log.Println(url)
-	// fmt.Println(page)
 }
 
 func getInputURL() string {
@@ -14,7 +13,7 @@ func getInputURL() string {
 		log.Fatalln("input argument error:", err)
 	}
 
-	err = stringToValidURL(inputURL)
+	err = stringIsValidURL(inputURL)
 	if err != nil {
 		log.Fatalln("url parsing error:", err)
 	}
