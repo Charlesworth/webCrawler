@@ -7,25 +7,25 @@ import (
 
 func TestStringToValidURL(t *testing.T) {
 	HTTPURLString := "http://google.com"
-	_, err := stringToValidURL(HTTPURLString)
+	err := stringToValidURL(HTTPURLString)
 	if err != nil {
 		t.Error("stringToValidURL returned an error on a valid HTTP string:", err)
 	}
 
 	HTTPSURLString := "https://google.com"
-	_, err = stringToValidURL(HTTPSURLString)
+	err = stringToValidURL(HTTPSURLString)
 	if err != nil {
 		t.Error("stringToValidURL returned an error on a valid HTTPS string:", err)
 	}
 
 	noSchemeURLString := "google.com"
-	_, err = stringToValidURL(noSchemeURLString)
+	err = stringToValidURL(noSchemeURLString)
 	if err == nil {
 		t.Error("stringToValidURL returned no error on a string with no scheme")
 	}
 
 	incorrectSchemeURLString := "postgres://google.com"
-	_, err = stringToValidURL(incorrectSchemeURLString)
+	err = stringToValidURL(incorrectSchemeURLString)
 	if err == nil {
 		t.Error("stringToValidURL returned no error on a string with a non HTTP/HTTPS scheme")
 	}
