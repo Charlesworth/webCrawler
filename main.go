@@ -4,7 +4,9 @@ import "log"
 
 func main() {
 	url := getInputURL()
-	log.Println(url)
+	log.Println("Starting at URL: ", url)
+	//recursiveGet
+
 }
 
 func getInputURL() string {
@@ -13,9 +15,8 @@ func getInputURL() string {
 		log.Fatalln("input argument error:", err)
 	}
 
-	err = stringIsValidURL(inputURL)
-	if err != nil {
-		log.Fatalln("url parsing error:", err)
+	if !stringIsValidURL(inputURL) {
+		log.Fatalln("input URL is not valid, please enter a http/https URL")
 	}
 
 	return inputURL

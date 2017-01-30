@@ -7,27 +7,23 @@ import (
 
 func TestStringIsValidURL(t *testing.T) {
 	HTTPURLString := "http://google.com"
-	err := stringIsValidURL(HTTPURLString)
-	if err != nil {
-		t.Error("stringIsValidURL returned an error on a valid HTTP string:", err)
+	if !stringIsValidURL(HTTPURLString) {
+		t.Error("stringIsValidURL returned false on a valid HTTP string")
 	}
 
 	HTTPSURLString := "https://google.com"
-	err = stringIsValidURL(HTTPSURLString)
-	if err != nil {
-		t.Error("stringIsValidURL returned an error on a valid HTTPS string:", err)
+	if !stringIsValidURL(HTTPSURLString) {
+		t.Error("stringIsValidURL returned false on a valid HTTPS string")
 	}
 
 	noSchemeURLString := "google.com"
-	err = stringIsValidURL(noSchemeURLString)
-	if err == nil {
-		t.Error("stringIsValidURL returned no error on a string with no scheme")
+	if stringIsValidURL(noSchemeURLString) {
+		t.Error("stringIsValidURL returned true on a string with no scheme")
 	}
 
 	incorrectSchemeURLString := "postgres://google.com"
-	err = stringIsValidURL(incorrectSchemeURLString)
-	if err == nil {
-		t.Error("stringIsValidURL returned no error on a string with a non HTTP/HTTPS scheme")
+	if stringIsValidURL(incorrectSchemeURLString) {
+		t.Error("stringIsValidURL returned true on a string with a non HTTP/HTTPS scheme")
 	}
 }
 
@@ -46,4 +42,50 @@ func TestValidHTTPOrHTTPS(t *testing.T) {
 	if validHTTPOrHTTPS(postgresURL) {
 		t.Error("validHTTPOrHTTPS returned true on a non http/https url")
 	}
+}
+
+func TestHasSchemeAndHost(t *testing.T) {
+	if hasSchemeAndHost("/test") {
+		t.Error("hasSchemeAndHost returned true when no Scheme or Host were present")
+	}
+	if hasSchemeAndHost("www.google.com/test") {
+		t.Error("hasSchemeAndHost returned true when no Scheme was present")
+	}
+	if hasSchemeAndHost("http:///test") {
+		t.Error("hasSchemeAndHost returned true when no Host was present")
+	}
+	if !hasSchemeAndHost("http://www.google.com/test") {
+		t.Error("hasSchemeAndHost returned false when both Host and Scheme were present")
+	}
+	if !hasSchemeAndHost("http://google.com/test") {
+		t.Error("hasSchemeAndHost returned false when both Host and Scheme were present with no www. prefix")
+	}
+}
+
+func TestIsSameDomain(t *testing.T) {
+	if !isSameDomain("http://www.google.com", "http://www.google.com") {
+		t.Error("isSameDomain returned false on matching urls")
+	}
+	if !isSameDomain("http://www.google.com/test", "http://www.google.com") {
+		t.Error("isSameDomain returned false on matching urls with query url having an extension")
+	}
+	if !isSameDomain("http://www.google.com", "http://www.google.com/test") {
+		t.Error("isSameDomain returned false on matching urls with base url having an extension")
+	}
+	if isSameDomain("https://www.google.com", "http://www.google.com") {
+		t.Error("isSameDomain returned true on urls with differnt scheme")
+	}
+	if isSameDomain("http://www.bing.com", "http://www.google.com") {
+		t.Error("isSameDomain returned true on urls with different hosts")
+	}
+	if isSameDomain("https://www.bing.com", "http://www.google.com") {
+		t.Error("isSameDomain returned true on urls with different scheme and hosts")
+	}
+}
+
+func TestAppendSchemeAndHost(t *testing.T) {
+	t.Log(appendSchemeAndHost("http://www.charlie.com", "http://www.charlie.com"))
+	t.Log(appendSchemeAndHost("http://www.charlie.com/test", "http://www.charlie.com"))
+	t.Log(appendSchemeAndHost("/test", "http://www.charlie.com"))
+	t.Log(appendSchemeAndHost("/test.jpg", "http://www.charlie.com"))
 }
