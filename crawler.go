@@ -26,10 +26,8 @@ func crawl(startingURL string) {
 			continue
 		}
 
-		links := getLinks(resp)
+		links, assets := getLinksAndAssets(resp)
 		intraDomainLinks := sortSameDomain(links, startingURL)
-
-		assets := getAssets(resp)
 
 		for _, link := range intraDomainLinks {
 			_, present := crawledURLs[link]
@@ -45,13 +43,14 @@ func crawl(startingURL string) {
 	fmt.Println("]")
 }
 
-type page struct {
-	url    string
-	assets []string
+// Page asd;lkjflk;asdjf
+type Page struct {
+	URL    string   `json:"url"`
+	Assets []string `json:"assets"`
 }
 
 func printJSON(url string, assets []string) {
-	page := page{
+	page := Page{
 		url,
 		assets,
 	}
