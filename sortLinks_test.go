@@ -27,7 +27,13 @@ func TestSortSameDomain(t *testing.T) {
 	}
 	for i := 0; i < 3; i++ {
 		if !strings.Contains(sortedURLs[i], allSameDomains[i]) {
-			t.Error("returned string mismatch, ", sortedURLs[i], " should contain ", allSameDomains[i])
+			t.Error("sortSameDomain returned string mismatch, ", sortedURLs[i], " should contain ", allSameDomains[i])
 		}
+	}
+
+	emptySlice := []string{}
+	sortedURLs = sortSameDomain(emptySlice, domain)
+	if len(sortedURLs) != 0 {
+		t.Error("sortSameDomain returned a non empty slice when given an empty slice of URLs to sort")
 	}
 }

@@ -5,8 +5,8 @@ import "log"
 func main() {
 	url := getInputURL()
 	log.Println("Starting at URL: ", url)
-	//recursiveGet
 
+	crawl(url)
 }
 
 func getInputURL() string {

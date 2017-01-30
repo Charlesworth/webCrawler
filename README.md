@@ -1,8 +1,11 @@
 
-TODO
-- not sure if # links are supported
 
-### limitations:
+### limitations
 - no .js rendering
-- does not support match http and https in the same domain
+- does not support switching between http and https in the same domain
 - does not support hyperlinks to local files (e.g. a pdf hyperlink)
+
+### possible future additional features
+- visit the root domain of any supplied URL first
+- support http/https changes on the same host as the same domain
+- also list links to non http/https schemes (such as a PDF link)
