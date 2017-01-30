@@ -11,9 +11,10 @@ import (
 var crawledURLs = make(map[string]bool)
 var crawlQueue = lane.NewQueue()
 
+// crawl takes a starting URL and crawls through all hyperlinks, printing results to std out.
 func crawl(startingURL string) {
 	crawlQueue.Enqueue(startingURL)
-	fmt.Println("[")
+	fmt.Fprintln(jsonPrinter, "[")
 
 	for {
 		if crawlQueue.Empty() {
@@ -27,6 +28,8 @@ func crawl(startingURL string) {
 		}
 
 		links, assets := getLinksAndAssets(resp)
+		resp.Body.Close()
+
 		intraDomainLinks := sortSameDomain(links, startingURL)
 
 		for _, link := range intraDomainLinks {
@@ -38,17 +41,19 @@ func crawl(startingURL string) {
 		}
 
 		printJSON(currentURL, assets)
+		fmt.Fprintln(jsonPrinter, ",")
 	}
 
-	fmt.Println("]")
+	fmt.Fprintln(jsonPrinter, "]")
 }
 
-// Page asd;lkjflk;asdjf
+// Page is the struct used to marshal page URL and asset info to JSON
 type Page struct {
 	URL    string   `json:"url"`
 	Assets []string `json:"assets"`
 }
 
+// printJSON is used print a page URL and assets to std out in JSON format
 func printJSON(url string, assets []string) {
 	page := Page{
 		url,
@@ -60,5 +65,5 @@ func printJSON(url string, assets []string) {
 		return
 	}
 
-	fmt.Println(string(res), ",")
+	fmt.Fprint(jsonPrinter, string(res))
 }

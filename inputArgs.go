@@ -1,18 +1,17 @@
 package main
 
 import (
-	"errors"
 	"flag"
+	"log"
 )
 
-func getInputArguement() (string, error) {
+func getInputArguement() string {
 	flag.Parse()
 	args := flag.Args()
 
 	if len(args) != 1 {
-		err := errors.New("Please specify a single starting http or https web address as first arguement")
-		return "", err
+		log.Fatalln("Error: Please specify a single starting http or https web address as first arguement")
 	}
 
-	return args[0], nil
+	return args[0]
 }
