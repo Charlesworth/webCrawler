@@ -1,4 +1,6 @@
 
+TODO
+- not sure if # links are supported
 
 ### limitations:
 - no .js rendering

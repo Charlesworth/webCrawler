@@ -18,7 +18,7 @@ func getLinks(response *http.Response) []string {
 
 			if token.Data == "a" {
 				for _, attribute := range token.Attr {
-					if attribute.Key == "href" {
+					if attribute.Key == "href" && !internalLink(attribute.Key) {
 						links = append(links, attribute.Val)
 					}
 				}

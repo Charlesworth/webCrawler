@@ -1,6 +1,9 @@
 package main
 
-import "net/url"
+import (
+	"net/url"
+	"strings"
+)
 
 func stringIsValidURL(urlString string) bool {
 	url, err := url.Parse(urlString)
@@ -57,4 +60,8 @@ func appendSchemeAndHost(href string, base string) string {
 
 	temp := baseURL.ResolveReference(uri)
 	return temp.String()
+}
+
+func internalLink(url string) bool {
+	return strings.HasPrefix(url, "#")
 }

@@ -9,15 +9,16 @@ import (
 
 func TestDuffTest(t *testing.T) {
 	t.Log("********* Getting links from ccochrane.com *********")
-	resp, _ := http.Get("http://www.ccochrane.com")
+	resp, _ := http.Get("https://www.gocardless.com")
 	asdf := getLinks(resp)
+	asdf = sortSameDomain(asdf, "https://www.gocardless.com")
 	for _, a := range asdf {
 		t.Log(a)
 	}
 	t.Log("length: ", len(asdf))
 
 	t.Log("******** Getting assets from ccochrane.com ********")
-	resp, _ = http.Get("http://www.ccochrane.com")
+	resp, _ = http.Get("https://www.gocardless.com")
 	asdf = getAssets(resp)
 	for _, a := range asdf {
 		t.Log(a)

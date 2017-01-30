@@ -98,3 +98,15 @@ func TestAppendSchemeAndHost(t *testing.T) {
 		t.Error()
 	}
 }
+
+func TestInternalLink(t *testing.T) {
+	internalURL := "#info"
+	if !internalLink(internalURL) {
+		t.Error("internalLink() returned false on a # href")
+	}
+
+	externalURL := "/info"
+	if internalLink(externalURL) {
+		t.Error("internalLink() returned true on a external url")
+	}
+}
