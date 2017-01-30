@@ -6,6 +6,7 @@ import (
 	"golang.org/x/net/html"
 )
 
+// getLinks returns a slice of strings, each of which is a hyperlink in the response body
 func getLinks(response *http.Response) []string {
 	htmlTokenizer := html.NewTokenizer(response.Body)
 	links := []string{}
@@ -30,6 +31,7 @@ func getLinks(response *http.Response) []string {
 	return links
 }
 
+// getAssets returns a slice of strings, each of which is a static asset in the response body
 func getAssets(response *http.Response) []string {
 	htmlTokenizer := html.NewTokenizer(response.Body)
 	links := []string{}

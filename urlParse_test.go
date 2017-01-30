@@ -84,8 +84,17 @@ func TestIsSameDomain(t *testing.T) {
 }
 
 func TestAppendSchemeAndHost(t *testing.T) {
-	t.Log(appendSchemeAndHost("http://www.charlie.com", "http://www.charlie.com"))
-	t.Log(appendSchemeAndHost("http://www.charlie.com/test", "http://www.charlie.com"))
-	t.Log(appendSchemeAndHost("/test", "http://www.charlie.com"))
-	t.Log(appendSchemeAndHost("/test.jpg", "http://www.charlie.com"))
+	baseURL := "http://www.google.com"
+	if appendSchemeAndHost("/test/", baseURL) != "http://www.google.com/test/" {
+		t.Error()
+	}
+	if appendSchemeAndHost(baseURL+"/test/", baseURL) != "http://www.google.com/test/" {
+		t.Error()
+	}
+	if appendSchemeAndHost("/test.jpg", baseURL) != "http://www.google.com/test.jpg" {
+		t.Error()
+	}
+	if appendSchemeAndHost(baseURL+"/test.jpg", baseURL) != "http://www.google.com/test.jpg" {
+		t.Error()
+	}
 }
