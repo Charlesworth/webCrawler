@@ -6,54 +6,50 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"scrapper/jsonPrinter"
 )
 
 func TestCrawl(t *testing.T) {
-	buffer := new(bytes.Buffer)
-	jsonPrinter = buffer
+	buffer := setJSONPrinterForTest()
 
-	t.Log("== test crawl with a non-existant starting address")
+	t.Log("== test crawl with a unreachable starting address")
 	crawl("http://")
 	output := buffer.String()
-	if output != "[\n]\n" {
-		t.Error("test crawl with a non-existant starting address did not return an empty JSON array '[]'")
+	if output != "" {
+		t.Error("test crawl with a non-existant starting address should return no JSON")
 	}
 
 	t.Log("== test crawl with a response with no links or assets")
 	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Hello, client")
+		fmt.Fprintln(w, "Hello World")
 	}))
-	buffer = new(bytes.Buffer)
-	jsonPrinter = buffer
+	buffer = setJSONPrinterForTest()
 	crawl(testServer.URL)
-	output = buffer.String()
-	if output != "[\n{\"url\":\""+testServer.URL+"\",\"assets\":[]},\n]\n" {
-		t.Error("WRONG")
-	}
 	testServer.Close()
+	output = buffer.String()
+	if output != "[{\"url\":\""+testServer.URL+"\",\"assets\":[]}]\n" {
+		t.Error("test crawl with a page starting address with no links or assets should return A single entity with no assets")
+		t.Error("returned:", output)
+	}
 
 	t.Log("== test crawl with a response with a single internal domain link and asset")
 	testServer = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "<img href=\"/test.jpg\">test1</img><a href=\"/test\">test</a>")
 	}))
-	buffer = new(bytes.Buffer)
-	jsonPrinter = buffer
+	buffer = setJSONPrinterForTest()
 	crawl(testServer.URL)
-	output = buffer.String()
-	if output != "[\n{\"url\":\""+testServer.URL+"\",\"assets\":[\""+testServer.URL+"/test.jpg\"]},\n{\"url\":\""+testServer.URL+"/test\",\"assets\":[\""+testServer.URL+"/test.jpg\"]},\n]\n" {
-		t.Error("WRONG")
-	}
 	testServer.Close()
+	output = buffer.String()
+	if output != "[{\"url\":\""+testServer.URL+"\",\"assets\":[\""+testServer.URL+"/test.jpg\"]},\n{\"url\":\""+testServer.URL+"/test\",\"assets\":[\""+testServer.URL+"/test.jpg\"]}]\n" {
+		t.Error("test crawl with a page starting address with a single link and sinlge asset should return two entitys with one asset each")
+		t.Error("returned:", output)
+	}
 }
 
-func TestPrintJSON(t *testing.T) {
+func setJSONPrinterForTest() *bytes.Buffer {
 	buffer := new(bytes.Buffer)
-	jsonPrinter = buffer
-
-	// test printJSON with a valid URL and Asset slice
-	printJSON("hello", []string{"goodbye"})
-	output := buffer.String()
-	if output != "{\"url\":\"hello\",\"assets\":[\"goodbye\"]}" {
-		t.Error("printJSON is output is incorrect")
-	}
+	jsonPrinter.Writter = buffer
+	jsonPrinter.Reset()
+	return buffer
 }

@@ -1,17 +1,23 @@
 package main
 
 import (
-	"io"
 	"log"
 	"os"
+	"scrapper/jsonPrinter"
 )
 
-var jsonPrinter io.Writer
-
 func main() {
-	jsonPrinter = os.Stdout
+	// set the jsonPrinter to output to std out
+	jsonPrinter.Writter = os.Stdout
+
+	// get the starting URL from input arguement
 	url := getInputURL()
-	crawl(url)
+
+	// crawl from the starting URL
+	err := crawl(url)
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
 
 func getInputURL() string {
