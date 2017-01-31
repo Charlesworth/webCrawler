@@ -3,7 +3,8 @@ package main
 import (
 	"log"
 	"os"
-	"scrapper/jsonPrinter"
+
+	"github.com/charlesworth/webCrawler/jsonPrinter"
 )
 
 func main() {

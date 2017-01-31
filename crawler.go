@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"scrapper/jsonPrinter"
+	"github.com/charlesworth/webCrawler/jsonPrinter"
 
 	"github.com/oleiade/lane"
 )

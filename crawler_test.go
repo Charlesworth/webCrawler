@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"scrapper/jsonPrinter"
+	"github.com/charlesworth/webCrawler/jsonPrinter"
 )
 
 func TestCrawl(t *testing.T) {
