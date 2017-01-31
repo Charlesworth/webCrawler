@@ -1,6 +1,8 @@
 # webCrawler
 A sequential web crawler for visiting all same domain links viable from a specified URL and printing any assets those pages reference. Output's onto std out in JSON format.
 
+Note: URL input only supports absolute URI, a scheme and host must be supplied e.g. "http://www.ccochrane.com"
+
 ### Running
 
 ##### Running binary
