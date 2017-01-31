@@ -11,20 +11,14 @@ func main() {
 	jsonPrinter.Writter = os.Stdout
 
 	// get the starting URL from input arguement
-	url := getInputURL()
-
-	// crawl from the starting URL
-	err := crawl(url)
+	url, err := getInputURL()
 	if err != nil {
 		log.Fatalln(err)
 	}
-}
 
-func getInputURL() string {
-	inputURL := getInputArguement()
-
-	if !stringIsValidURL(inputURL) {
-		log.Fatalln("input URL is not valid, please enter a http/https URL")
+	// crawl from the starting URL
+	err = crawl(url)
+	if err != nil {
+		log.Fatalln(err)
 	}
-	return inputURL
 }

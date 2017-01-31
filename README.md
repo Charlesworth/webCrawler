@@ -1,4 +1,8 @@
-
+TODO
+- sanitize and comment tokenizer
+- combine inputArgs and getInputURL
+- comment sort links
+- better readme with running instructions
 
 ### limitations
 - no .js rendering

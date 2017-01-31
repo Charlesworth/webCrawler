@@ -33,7 +33,7 @@ func crawl(startingURL string) error {
 		// http get the currentURL
 		resp, err := http.Get(currentURL)
 		if err != nil {
-			// if there is an error and its the first URL, return an error, else continue
+			// if there is an error and it's the starting URL, return an error, else continue
 			if currentURL == startingURL {
 				return errors.New("Error reaching starting URL:" + err.Error())
 			}
